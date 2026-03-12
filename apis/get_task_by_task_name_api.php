@@ -1,18 +1,20 @@
-<?php 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json; charset=UTF-8");
+    <?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET");
+    header("Access-Control-Allow-Headers: Content-Type");
+    header("Content-Type: application/json; charset=UTF-8");
 
-require_once '../connectDB.php';
-require_once '../models/T_011.php';
+    require_once './../connectDB.php';
+    require_once './../models/T_011.php';
 
-$connDB = new ConnectDB();
-$T_011 = new T_011($connDB->getConnection());
+    $connDB = new ConnectDB();
+    $T_011 = new T_011($connDB->getConnection());
 
-$result = $T_011->getAllTasks();
+    $data = json_decode(file_get_contents("php://input"));
 
-  if ($result->rowCount() > 0) {
+    $result = $T_011->gettaskByName($data->taskName);
+
+    if ($result->rowCount() > 0) {
         $dataInfo = array();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         
